@@ -34,6 +34,7 @@ public class Prova extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         exit1 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
+        exit = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -58,6 +59,7 @@ public class Prova extends javax.swing.JFrame {
         exit1.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
         exit1.setForeground(new java.awt.Color(255, 255, 255));
         exit1.setText("-");
+        exit1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         exit1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 exit1MouseClicked(evt);
@@ -66,9 +68,10 @@ public class Prova extends javax.swing.JFrame {
                 exit1MousePressed(evt);
             }
         });
-        jPanel3.add(exit1, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 0, 20, 20));
+        jPanel3.add(exit1, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 0, 20, 20));
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8_Exit_25px.png"))); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8_Back_Arrow_32px.png"))); // NOI18N
+        jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel7.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 jLabel7MouseDragged(evt);
@@ -79,7 +82,19 @@ public class Prova extends javax.swing.JFrame {
                 jLabel7MouseClicked(evt);
             }
         });
-        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 0, 30, 30));
+        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 30, 30));
+
+        exit.setFont(new java.awt.Font("Verdana", 1, 20)); // NOI18N
+        exit.setForeground(new java.awt.Color(255, 255, 255));
+        exit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        exit.setText("X");
+        exit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        exit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                exitMousePressed(evt);
+            }
+        });
+        jPanel3.add(exit, new org.netbeans.lib.awtextra.AbsoluteConstraints(1010, 0, 30, -1));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -144,6 +159,10 @@ public class Prova extends javax.swing.JFrame {
         this.setLocation(x-xx,y-xy);
     }//GEN-LAST:event_jPanel3MouseDragged
 
+    private void exitMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMousePressed
+        System.exit(0);
+    }//GEN-LAST:event_exitMousePressed
+
     /**
      * @param args the command line arguments
      */
@@ -181,6 +200,7 @@ public class Prova extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel exit;
     private javax.swing.JLabel exit1;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;

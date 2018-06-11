@@ -5,10 +5,13 @@
  */
 package Telas;
 
+import Telas.Cadastra;
+import Telas.Prova;
 import java.awt.Frame;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.paint.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -23,6 +26,28 @@ public class Principal extends javax.swing.JFrame {
      */
     public Principal() {
         initComponents();
+        try{
+            Process p = Runtime.getRuntime().exec("C:\\wamp64\\wampmanager.exe");
+            
+            if(p.exitValue()==0){
+                System.out.println("WampServer executado com sucesso!");
+            }
+        }catch(Exception e){
+            System.out.println("Erro ao abrir WampServer!");
+        }
+        
+        File dir = new File(javax.swing.filechooser.FileSystemView.getFileSystemView().getDefaultDirectory() + "\\BancodeQuestões");
+        if(!dir.exists())
+            dir.mkdir();
+        File dir2 = new File(javax.swing.filechooser.FileSystemView.getFileSystemView().getDefaultDirectory() + "\\BancodeQuestões\\Imagens");
+        if(!dir2.exists())
+            dir2.mkdir();
+        File dir3 = new File(javax.swing.filechooser.FileSystemView.getFileSystemView().getDefaultDirectory() + "\\BancodeQuestões\\Provas");
+        if(!dir3.exists())
+            dir3.mkdir();
+        File dir4 = new File(javax.swing.filechooser.FileSystemView.getFileSystemView().getDefaultDirectory() + "\\BancodeQuestões\\Gabaritos");
+        if(!dir4.exists())
+            dir4.mkdir();
     }
 
     /**
@@ -52,7 +77,6 @@ public class Principal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
-        setMaximumSize(new java.awt.Dimension(1040, 680));
         setMinimumSize(new java.awt.Dimension(1040, 680));
         setUndecorated(true);
 
@@ -132,7 +156,6 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1040, 270));
 
-        jPanel3.setBackground(java.awt.SystemColor.controlHighlight);
         jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jPanel3MouseEntered(evt);
@@ -177,7 +200,6 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 390, 170, 160));
 
-        jPanel5.setBackground(java.awt.SystemColor.controlHighlight);
         jPanel5.setPreferredSize(new java.awt.Dimension(170, 160));
         jPanel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -226,7 +248,6 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 390, 160, 160));
 
-        jPanel6.setBackground(java.awt.SystemColor.controlHighlight);
         jPanel6.setPreferredSize(new java.awt.Dimension(170, 160));
         jPanel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -305,11 +326,12 @@ public class Principal extends javax.swing.JFrame {
             Thread.sleep(500);
         } catch (InterruptedException ex) {
         }
-       Questoes pr = new Questoes();
+       ListarQuestoes pr = new ListarQuestoes("Digite");
        pr.setVisible(true);
        pr.pack();
        pr.setLocationRelativeTo(null);
        pr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       pr.pesquisar();
        this.dispose();
     }//GEN-LAST:event_jPanel3MousePressed
 
@@ -357,6 +379,7 @@ public class Principal extends javax.swing.JFrame {
         } catch (InterruptedException ex) {
         }
        Cadastra cd = new Cadastra();
+       cd.cadastrandoQuestao();
        cd.setVisible(true);
        cd.pack();
        cd.setLocationRelativeTo(null);
