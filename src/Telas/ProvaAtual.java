@@ -10,6 +10,7 @@ import bancodequestoes2.DataQuestions;
 import bancodequestoes2.InfoSoftware;
 import bancodequestoes2.connectionWord_1;
 import java.awt.Frame;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -155,11 +156,18 @@ public class ProvaAtual extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTblInfoQuestoes.setColumnSelectionAllowed(true);
         jTblInfoQuestoes.setGridColor(new java.awt.Color(255, 255, 255));
         jTblInfoQuestoes.setSelectionBackground(new java.awt.Color(0, 0, 0));
         jTblInfoQuestoes.setShowHorizontalLines(false);
         jTblInfoQuestoes.getTableHeader().setReorderingAllowed(false);
+        jTblInfoQuestoes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTblInfoQuestoesKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTblInfoQuestoes);
+        jTblInfoQuestoes.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (jTblInfoQuestoes.getColumnModel().getColumnCount() > 0) {
             jTblInfoQuestoes.getColumnModel().getColumn(0).setMinWidth(0);
             jTblInfoQuestoes.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -438,6 +446,9 @@ public class ProvaAtual extends javax.swing.JFrame {
         // TODO add your handling code here:
         ArrayList<DataQuestions> questoes = new ArrayList();
         DataQuestions q = new DataQuestions();
+        boolean continuar = true;
+        boolean radioTurnoSelected = false;
+        boolean radioTipoSelected = false;
         
         for (Integer questoesProva : InfoSoftware.questoesProvas) {
            q = DAOFactory.getQuestao(questoesProva);
@@ -448,37 +459,87 @@ public class ProvaAtual extends javax.swing.JFrame {
         String tipoProva = "";
         String turno = "";
         
+        if(jTextField1.getText().equals(""))
+            continuar = false;
+        if(jTextField2.getText().equals(""))
+            continuar = false;
+        if(jTextField3.getText().equals(""))
+            continuar = false;
+            
         if(jRadioButton1.isSelected()){
             tipoProva = jRadioButton1.getText();
+            radioTipoSelected = true;
         }
         
         if(jRadioButton2.isSelected()){
             tipoProva = jRadioButton2.getText();
+            radioTipoSelected = true;
         }
         
         if(jRadioButton3.isSelected()){
             tipoProva = jRadioButton3.getText();
+            radioTipoSelected = true;
         }
         
         if(jRadioButton4.isSelected()){
             tipoProva = jRadioButton4.getText();
+            radioTipoSelected = true;
         }
         
         if(jRadioButton5.isSelected()){
             turno = jRadioButton5.getText();
+            radioTurnoSelected = true;
         }
         
         if(jRadioButton6.isSelected()){
             turno = jRadioButton6.getText();
+             radioTurnoSelected = true;
         }
         
         if(jRadioButton7.isSelected()){
             turno = jRadioButton7.getText();
+             radioTurnoSelected = true;
         }
         
-        connectionWord_1.criarProva(jTextField1.getText(), jTextField2.getText(), tipoProva, jComboBox1.getSelectedItem().toString(), turno, jTextField3.getText(), jComboBox2.getSelectedItem().toString(), questoes);
-        JOptionPane.showMessageDialog(null, "A Prova foi salva!");
+        if(radioTipoSelected == false)
+            continuar = false;
+        
+        if(radioTurnoSelected == false)
+            continuar = false;
+        
+        if(continuar){
+            connectionWord_1.criarProva(jTextField1.getText(), jTextField2.getText(), tipoProva, jComboBox1.getSelectedItem().toString(), turno, jTextField3.getText(), jComboBox2.getSelectedItem().toString(), questoes);
+            JOptionPane.showMessageDialog(null, "A Prova foi salva!");
+        }else{
+            JOptionPane.showMessageDialog(null, "Algum campo não foi informado!");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jTblInfoQuestoesKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTblInfoQuestoesKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_DELETE){
+        int[] linhas = jTblInfoQuestoes.getSelectedRows();
+        if(linhas.length != 0){
+            int continuar = 1;
+            continuar = JOptionPane.showConfirmDialog(null, "Essa ação irá excluir a questão da prova atual!\nTem certeza que deseja continuar?");
+            if(continuar == 0){
+                for(int i = 0; i < linhas.length; i++){
+                int id = Integer.parseInt( jTblInfoQuestoes.getValueAt(i, 0).toString());
+                int j = jTblInfoQuestoes.getSelectedRow();
+                
+                DefaultTableModel model = (DefaultTableModel) jTblInfoQuestoes.getModel();
+                model.removeRow(j);
+                for(int h = 0; h < InfoSoftware.questoesProvas.size(); h++){
+                    if(InfoSoftware.questoesProvas.get(h) == id)
+                        InfoSoftware.questoesProvas.remove(h);
+                }
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Nenhuma questão foi selecionada!");
+        }
+        }
+        }
+    }//GEN-LAST:event_jTblInfoQuestoesKeyPressed
 
     /**
      * @param args the command line arguments

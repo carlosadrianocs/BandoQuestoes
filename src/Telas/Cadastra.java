@@ -1040,7 +1040,7 @@ public class Cadastra extends javax.swing.JFrame {
                         fcOrigem.transferTo(0, fcOrigem.size(), fcDestino);
                         origem.close();
                         destino.close();
-                        pastaFoto = dir2.getAbsolutePath() + "\\Questao_"+ arquivoF.getName();
+                        pastaFoto = dir2.getAbsolutePath().replace("\\", "/") + "/Questao_"+ arquivoF.getName();
                     } catch (FileNotFoundException ex) {
                         Logger.getLogger(Cadastra.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (IOException ex) {
@@ -1059,6 +1059,8 @@ public class Cadastra extends javax.swing.JFrame {
                 
                 if(pastaFoto != ""){
                     questaoACadastrar.caminhoImagem = pastaFoto;
+                }else{
+                    questaoACadastrar.caminhoImagem = "";
                 }
                 if(jTextoJustificativa.getText() != ""){
                     questaoACadastrar.respostaDiscursiva = jTextoJustificativa.getText();
@@ -1143,23 +1145,131 @@ public class Cadastra extends javax.swing.JFrame {
                 }else{
                     if(jTipoQuestao.getSelectedItem() == "Verdadeiro e Falso"){
                         DAOFactory.inserirQuestaoVF(jDisciplinas.getSelectedItem().toString(), jTextoEnunciado.getText(), jTipoQuestao.getSelectedItem().toString(), jTemaQuestao.getSelectedItem().toString(), pastaFoto, jTxtNota.getText(),  jCheckBox1, jCheckBox2, jTextoAlt1.getText(), jTextoAlt2.getText());
+                        jTextoEnunciado.setText("");
+                            jTipoQuestao.setSelectedItem("Selecione");
+                            jQuantidadeQuestao.setSelectedItem("Selecione");
+                            jTemaQuestao.setSelectedItem("Selecione");
+                            jDisciplinas.setSelectedItem("Selecione");
+                            jTxtNota.setText("");
+                            jTextoAlt1.setText("");
+                            jTextoAlt2.setText("");
+                            jTextoAlt3.setText("");
+                            jTextoAlt4.setText("");
+                            jTextoAlt5.setText("");
+                            jTextoJustificativa.setText("");
+                            jCheckBox1.setSelected(false);
+                            jCheckBox2.setSelected(false);
+                            jCheckBox3.setSelected(false);
+                            jCheckBox4.setSelected(false);
+                            jCheckBox5.setSelected(false);
+                            jLblIcon.setIcon(null);
                         JOptionPane.showMessageDialog(null, "Dados salvos com sucesso!");
                     }else if(jTipoQuestao.getSelectedItem() == "Discursiva"){
                         DAOFactory.inserirQuestaoD(jDisciplinas.getSelectedItem().toString(), jTextoEnunciado.getText(), jTipoQuestao.getSelectedItem().toString(), jTemaQuestao.getSelectedItem().toString(), pastaFoto, jTxtNota.getText(),  jTextoJustificativa.getText());
+                        jTextoEnunciado.setText("");
+                            jTipoQuestao.setSelectedItem("Selecione");
+                            jQuantidadeQuestao.setSelectedItem("Selecione");
+                            jTemaQuestao.setSelectedItem("Selecione");
+                            jDisciplinas.setSelectedItem("Selecione");
+                            jTxtNota.setText("");
+                            jTextoAlt1.setText("");
+                            jTextoAlt2.setText("");
+                            jTextoAlt3.setText("");
+                            jTextoAlt4.setText("");
+                            jTextoAlt5.setText("");
+                            jTextoJustificativa.setText("");
+                            jCheckBox1.setSelected(false);
+                            jCheckBox2.setSelected(false);
+                            jCheckBox3.setSelected(false);
+                            jCheckBox4.setSelected(false);
+                            jCheckBox5.setSelected(false);
+                            jLblIcon.setIcon(null);
                         JOptionPane.showMessageDialog(null, "Dados salvos com sucesso!");
                     }
                     else if(jTipoQuestao.getSelectedItem() == "Alternativa"){
                         if(jQuantidadeQuestao.getSelectedItem() == "2"){
                             DAOFactory.inserirQuestaoVF(jDisciplinas.getSelectedItem().toString(), jTextoEnunciado.getText(), jTipoQuestao.getSelectedItem().toString(), jTemaQuestao.getSelectedItem().toString(), pastaFoto, jTxtNota.getText(),  jCheckBox1, jCheckBox2, jTextoAlt1.getText(), jTextoAlt2.getText());
+                            jTextoEnunciado.setText("");
+                            jTipoQuestao.setSelectedItem("Selecione");
+                            jQuantidadeQuestao.setSelectedItem("Selecione");
+                            jTemaQuestao.setSelectedItem("Selecione");
+                            jDisciplinas.setSelectedItem("Selecione");
+                            jTxtNota.setText("");
+                            jTextoAlt1.setText("");
+                            jTextoAlt2.setText("");
+                            jTextoAlt3.setText("");
+                            jTextoAlt4.setText("");
+                            jTextoAlt5.setText("");
+                            jTextoJustificativa.setText("");
+                            jCheckBox1.setSelected(false);
+                            jCheckBox2.setSelected(false);
+                            jCheckBox3.setSelected(false);
+                            jCheckBox4.setSelected(false);
+                            jCheckBox5.setSelected(false);
+                            jLblIcon.setIcon(null);
                             JOptionPane.showMessageDialog(null, "Dados salvos com sucesso!");
                         }else if(jQuantidadeQuestao.getSelectedItem() == "3"){
                             DAOFactory.inserirEmAlternativas(jDisciplinas.getSelectedItem().toString(), jTextoEnunciado.getText(), jTipoQuestao.getSelectedItem().toString(), jTemaQuestao.getSelectedItem().toString(), pastaFoto, jTxtNota.getText(), jCheckBox1, jCheckBox2, jCheckBox3, jTextoAlt1.getText(), jTextoAlt2.getText(), jTextoAlt3.getText());
+                            jTextoEnunciado.setText("");
+                            jTipoQuestao.setSelectedItem("Selecione");
+                            jQuantidadeQuestao.setSelectedItem("Selecione");
+                            jTemaQuestao.setSelectedItem("Selecione");
+                            jDisciplinas.setSelectedItem("Selecione");
+                            jTxtNota.setText("");
+                            jTextoAlt1.setText("");
+                            jTextoAlt2.setText("");
+                            jTextoAlt3.setText("");
+                            jTextoAlt4.setText("");
+                            jTextoAlt5.setText("");
+                            jTextoJustificativa.setText("");
+                            jCheckBox1.setSelected(false);
+                            jCheckBox2.setSelected(false);
+                            jCheckBox3.setSelected(false);
+                            jCheckBox4.setSelected(false);
+                            jCheckBox5.setSelected(false);
+                            jLblIcon.setIcon(null);
                             JOptionPane.showMessageDialog(null, "Dados salvos com sucesso!");
                         }else if(jQuantidadeQuestao.getSelectedItem() == "4"){
                             DAOFactory.inserirEmAlternativas(jDisciplinas.getSelectedItem().toString(), jTextoEnunciado.getText(), jTipoQuestao.getSelectedItem().toString(), jTemaQuestao.getSelectedItem().toString(), pastaFoto, jTxtNota.getText(), jCheckBox1, jCheckBox2, jCheckBox3, jCheckBox4, jTextoAlt1.getText(), jTextoAlt2.getText(), jTextoAlt3.getText(), jTextoAlt4.getText());
+                            jTextoEnunciado.setText("");
+                            jTipoQuestao.setSelectedItem("Selecione");
+                            jQuantidadeQuestao.setSelectedItem("Selecione");
+                            jTemaQuestao.setSelectedItem("Selecione");
+                            jDisciplinas.setSelectedItem("Selecione");
+                            jTxtNota.setText("");
+                            jTextoAlt1.setText("");
+                            jTextoAlt2.setText("");
+                            jTextoAlt3.setText("");
+                            jTextoAlt4.setText("");
+                            jTextoAlt5.setText("");
+                            jTextoJustificativa.setText("");
+                            jCheckBox1.setSelected(false);
+                            jCheckBox2.setSelected(false);
+                            jCheckBox3.setSelected(false);
+                            jCheckBox4.setSelected(false);
+                            jCheckBox5.setSelected(false);
+                            jLblIcon.setIcon(null);
                             JOptionPane.showMessageDialog(null, "Dados salvos com sucesso!");
                         }else if(jQuantidadeQuestao.getSelectedItem() == "5"){
                             DAOFactory.inserirEmAlternativas(jDisciplinas.getSelectedItem().toString(), jTextoEnunciado.getText(), jTipoQuestao.getSelectedItem().toString(), jTemaQuestao.getSelectedItem().toString(), pastaFoto, jTxtNota.getText(), jCheckBox1, jCheckBox2, jCheckBox3, jCheckBox4, jCheckBox5, jTextoAlt1.getText(), jTextoAlt2.getText(), jTextoAlt3.getText(), jTextoAlt4.getText(), jTextoAlt5.getText());
+                            jTextoEnunciado.setText("");
+                            jTipoQuestao.setSelectedItem("Selecione");
+                            jQuantidadeQuestao.setSelectedItem("Selecione");
+                            jTemaQuestao.setSelectedItem("Selecione");
+                            jDisciplinas.setSelectedItem("Selecione");
+                            jTxtNota.setText("");
+                            jTextoAlt1.setText("");
+                            jTextoAlt2.setText("");
+                            jTextoAlt3.setText("");
+                            jTextoAlt4.setText("");
+                            jTextoAlt5.setText("");
+                            jTextoJustificativa.setText("");
+                            jCheckBox1.setSelected(false);
+                            jCheckBox2.setSelected(false);
+                            jCheckBox3.setSelected(false);
+                            jCheckBox4.setSelected(false);
+                            jCheckBox5.setSelected(false);
+                            jLblIcon.setIcon(null);
                             JOptionPane.showMessageDialog(null, "Dados salvos com sucesso!");
                         }
                     }
@@ -1227,7 +1337,7 @@ public class Cadastra extends javax.swing.JFrame {
             String fodase = JOptionPane.showInputDialog(null, "Digite");
         }*/
     }//GEN-LAST:event_jTemaQuestaoActionPerformed
-    String pastaFoto;
+    String pastaFoto = "";
     File arquivoF;
     private void jLblIconMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLblIconMouseClicked
         // TODO add your handling code here:

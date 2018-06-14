@@ -34,6 +34,7 @@ public class ListarQuestoes extends javax.swing.JFrame {
         header.setForeground(new Color(45,118,232));
         jScrollPane1.getViewport().setBackground(Color.WHITE);
         jCampoPesquisa.setText(pesquisa);
+        jLabel5.setVisible(false);
     }
 
    
@@ -126,6 +127,11 @@ public class ListarQuestoes extends javax.swing.JFrame {
         jCampoPesquisa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCampoPesquisaActionPerformed(evt);
+            }
+        });
+        jCampoPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jCampoPesquisaKeyPressed(evt);
             }
         });
 
@@ -257,6 +263,7 @@ public class ListarQuestoes extends javax.swing.JFrame {
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icons8_Edit_26px_2.png"))); // NOI18N
         jLabel5.setText("Editar");
         jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.setOpaque(true);
         jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jLabel5MousePressed(evt);
@@ -478,11 +485,6 @@ public class ListarQuestoes extends javax.swing.JFrame {
 
     private void jPanel1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyTyped
         // TODO add your handling code here:
-        System.out.println("foi");
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER && jCampoPesquisa.isFocusable() == true && jCampoPesquisa.getText() != "" || jCampoPesquisa.getText() != "Digite"){
-            System.out.println("entrou");
-            pesquisar();
-        }
     }//GEN-LAST:event_jPanel1KeyTyped
     
     private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
@@ -576,6 +578,15 @@ public class ListarQuestoes extends javax.swing.JFrame {
                 System.exit(0);
             }
     }//GEN-LAST:event_exitMousePressed
+
+    private void jCampoPesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jCampoPesquisaKeyPressed
+        // TODO add your handling code here:
+        System.out.println("foi");
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            System.out.println("entrou");
+            pesquisar();
+        }
+    }//GEN-LAST:event_jCampoPesquisaKeyPressed
      
     public void pesquisar(){
         try {
@@ -639,7 +650,7 @@ public class ListarQuestoes extends javax.swing.JFrame {
                 System.out.println("Erro ao fechar conexão");
             }
         
-    }
+         }
     }
     
     public void setColor(JPanel panel){

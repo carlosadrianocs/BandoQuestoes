@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 /**
  *
@@ -99,17 +97,27 @@ public class DAOFactory {
     private static void setEmQuestoes(String enunciado, String tipo, String tema, String imagem, String nota, int foreignKey){
         
         String sql;
-        sql = "INSERT INTO questoes(enunciado, tipo, tema, imagem, nota, fk_disciplina) VALUES(?, ?, ?, ?, ?, ?)";
-        
+        if(tema.equals("Selecione")){
+            sql = "INSERT INTO questoes(enunciado, tipo, imagem, nota, fk_disciplina) VALUES(?, ?, ?, ?, ?)";
+        }else{
+            sql = "INSERT INTO questoes(enunciado, tipo, tema, imagem, nota, fk_disciplina) VALUES(?, ?, ?, ?, ?, ?)";
+        }
         try {
             PreparedStatement stmt = DAOFactory.getConnection().prepareStatement(sql);
-            
-            stmt.setString(1, enunciado);
-            stmt.setString(2, tipo);
-            stmt.setString(3, tema);
-            stmt.setString(4, imagem);
-            stmt.setString(5, nota);
-            stmt.setInt(6, foreignKey);
+            if(tema.equals("Selecione")){
+                stmt.setString(1, enunciado);
+                stmt.setString(2, tipo);
+                stmt.setString(3, imagem);
+                stmt.setString(4, nota);
+                stmt.setInt(5, foreignKey);
+            }else{
+                stmt.setString(1, enunciado);
+                stmt.setString(2, tipo);
+                stmt.setString(3, tema);
+                stmt.setString(4, imagem);
+                stmt.setString(5, nota);
+                stmt.setInt(6, foreignKey);
+            }
             stmt.execute();
             stmt.close();
             System.out.println("Sucesso ao inserir na tabela questoes!");
@@ -756,22 +764,22 @@ public class DAOFactory {
              increment += " where";
          }
          if(condicao == "tema"){
-             increment += " questoes.tema = ?";
+             increment += " q.tema = ?";
              comparacao.add(comp);
              numInterrogacao ++;
          }
          if(condicao == "tipo"){
-             increment += " questoes.tipo = ?";
+             increment += " q.tipo = ?";
              comparacao.add(comp);
              numInterrogacao ++;
          }
          if(condicao == "disciplina"){
-             increment += " disciplina.nome = ?";
+             increment += " d.nome = ?";
              comparacao.add(comp);
              numInterrogacao ++;
          }
          if(condicao == "pesquisa"){
-             increment += " questoes.enunciado like ?";
+             increment += " q.enunciado like ?";
              comparacao.add(comp);
              numInterrogacao ++;
          }

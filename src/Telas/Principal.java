@@ -10,6 +10,8 @@ import Telas.Prova;
 import java.awt.Frame;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;

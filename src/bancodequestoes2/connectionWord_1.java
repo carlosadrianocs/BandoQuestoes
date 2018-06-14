@@ -13,10 +13,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
 import org.apache.poi.xwpf.usermodel.Borders;
@@ -35,11 +37,10 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
  * @author jacks
  */
 public class connectionWord_1 {
-
+        public static FileOutputStream docSaida = null;
+        public static InputStream imagem = null;
     public static void criarProva(String disciplina, String professor, String tipoProva, String periodo, String turno, String curso, String bimestre, ArrayList<DataQuestions> questoes) {
         
-        FileOutputStream docSaida = null;
-        InputStream imagem = null;
         XWPFDocument doc = new XWPFDocument();
         
         try {
@@ -64,7 +65,13 @@ public class connectionWord_1 {
                     existe = true;
                 }
                 e++;
-                path = path.substring(0, path.length()-1);
+                if(e < 11){
+                    path = path.substring(0, path.length()-1);
+                }else if(e < 100){
+                    path = path.substring(0, path.length()-2);
+                }else{
+                    path = path.substring(0, path.length()-3);
+                }
             }
             if(!existe)
                 docSaida = new FileOutputStream(new File(file.getAbsoluteFile() + ".doc"));
@@ -81,8 +88,8 @@ public class connectionWord_1 {
             pageMar.setBottom(BigInteger.valueOf(1135L));
             //Criando Cabeçalho
             XWPFHeaderFooterPolicy headerFooter = new XWPFHeaderFooterPolicy(doc);
-            XWPFHeader header = headerFooter.createHeader(headerFooter.DEFAULT);
-            XWPFFooter footer = headerFooter.createFooter(headerFooter.DEFAULT);
+            XWPFHeader header = headerFooter.createHeader(XWPFHeaderFooterPolicy.DEFAULT);
+            XWPFFooter footer = headerFooter.createFooter(XWPFHeaderFooterPolicy.DEFAULT);
             //Criando paragrafo da imagem
 //            XWPFParagraph pCabecalhoImagem = header.createParagraph();
 //            pCabecalhoImagem.setAlignment(ParagraphAlignment.LEFT);
@@ -272,15 +279,11 @@ public class connectionWord_1 {
            exec14.addTab();
            exec14.setText("BOA PROVA!");
            
-           XWPFParagraph pQuestao = doc.createParagraph();
-           pQuestao.setAlignment(ParagraphAlignment.LEFT);
            DataQuestions ques;
            
             for (int j = 0; j < questoes.size(); j++) {
                 ques = questoes.get(j);
                 
-                XWPFRun exec15 = pQuestao.createRun();
-                XWPFRun exec16 = pQuestao.createRun();
                 char[] letra = ques.enunciado.toCharArray();
                 char[] letra2 = ques.alternativa1.textoAlternativa.toCharArray();
                 char[] letra3 = ques.alternativa2.textoAlternativa.toCharArray();
@@ -288,33 +291,88 @@ public class connectionWord_1 {
                 char[] letra5 = ques.alternativa4.textoAlternativa.toCharArray();
                 char[] letra6 = ques.alternativa5.textoAlternativa.toCharArray();
                 
-                exec15.addBreak();
-                exec15.setBold(true);
-                exec15.setFontFamily("Times New Roman");
-                exec15.setFontSize(9);
-                exec16.setFontFamily("Times New Roman");
-                exec16.setFontSize(9);
                 if(j <10){
+                    XWPFParagraph pQuestao1 = doc.createParagraph();
+                    XWPFRun exec15 = pQuestao1.createRun();
+                    exec15.addBreak();
+                    exec15.setBold(true);
+                    exec15.setFontFamily("Times New Roman");
+                    exec15.setFontSize(9);
                     exec15.setText("EX_0" + (j+1)  + "   (Nota: " + ques.nota + ")");
                 }else if(j >10){
+                    XWPFParagraph pQuestao1 = doc.createParagraph();
+                    XWPFRun exec15 = pQuestao1.createRun();
+                    exec15.addBreak();
+                    exec15.setBold(true);
+                    exec15.setFontFamily("Times New Roman");
+                    exec15.setFontSize(9);
                     exec15.setText("EX_" + (j+1)  + "   (Nota: " + ques.nota + ")");
+                    exec15.addBreak();
                 }
-                exec15.addBreak();
                 //Escrevendo o enunciado
+                XWPFParagraph pQuestaoTemp = doc.createParagraph();
                 for(int i = 0; i < letra.length; i++){
-                    switch (letra[i]) {
-                        case '\t':
-                            exec16.addTab();
-                            break;
-                        case '\n':
-                            exec16.addBreak();
-                            break;
-                        default:
-                            exec16.setText("" + letra[i]);
-                            break;
+                    String keyImg = "";
+                    if(i+8 < letra.length){
+                        for( int h=i;h<(i+8);h++){
+                            keyImg += letra[h];
+                        }
+                    }
+                    if(letra[i] == '\n'){
+                        XWPFRun execTemp = pQuestaoTemp.createRun();
+                        execTemp.setFontFamily("Times New Roman");
+                        execTemp.setFontSize(9);
+                        execTemp.addBreak();
+                    }else if(letra[i] == '\t'){
+                        XWPFRun execTemp = pQuestaoTemp.createRun();
+                        execTemp.setFontFamily("Times New Roman");
+                        execTemp.setFontSize(9);
+                        execTemp.addTab();
+                    }else if(keyImg.equals("<pImage>")){
+                        XWPFRun execTemp = pQuestaoTemp.createRun();
+                        pQuestaoTemp.setAlignment(ParagraphAlignment.LEFT);
+                        execTemp.addBreak();
+                        File arq = null;
+                        arq = new File(ques.caminhoImagem);
+                        InputStream in= new FileInputStream(arq);
+                        float x = ImageConfig.alturaMaiorQueBase(arq);
+                        execTemp.addPicture(in, XWPFDocument.PICTURE_TYPE_JPEG, arq.getName(), Units.toEMU(118.75f), Units.toEMU(118.75f*x));
+                        execTemp.addBreak();
+                        execTemp.addBreak();
+                        i += 8;
+                    }else if(keyImg.equals("<mImage>")){
+                        XWPFRun execTemp = pQuestaoTemp.createRun();
+                        pQuestaoTemp.setAlignment(ParagraphAlignment.LEFT);
+                        execTemp.addBreak();
+                        File arq = null;
+                        arq = new File(ques.caminhoImagem);
+                        InputStream in= new FileInputStream(arq);
+                        float x = ImageConfig.alturaMaiorQueBase(arq);
+                        execTemp.addPicture(in, XWPFDocument.PICTURE_TYPE_JPEG, arq.getName(), Units.toEMU(237.5f), Units.toEMU(237.5f*x));
+                        execTemp.addBreak();
+                        execTemp.addBreak();
+                        i += 8;
+                    }else if(keyImg.equals("<gImage>")){
+                        XWPFRun execTemp = pQuestaoTemp.createRun();
+                        pQuestaoTemp.setAlignment(ParagraphAlignment.LEFT);
+                        execTemp.addBreak();
+                        File arq = null;
+                        arq = new File(ques.caminhoImagem);
+                        InputStream in= new FileInputStream(arq);
+                        float x = ImageConfig.alturaMaiorQueBase(arq);
+                        execTemp.addPicture(in, XWPFDocument.PICTURE_TYPE_JPEG, arq.getName(), Units.toEMU(450f), Units.toEMU(450*x));
+                        execTemp.addBreak();
+                        execTemp.addBreak();
+                        i += 8;
+                    }else{
+                        XWPFRun execTemp = pQuestaoTemp.createRun();
+                        execTemp.setFontFamily("Times New Roman");
+                        execTemp.setFontSize(9);
+                        execTemp.setText("" + letra[i]);
                     }
                 }
-                    exec16.addBreak();
+                    XWPFParagraph pQuestaoTemp1 = doc.createParagraph();
+                    XWPFRun exec16 = pQuestaoTemp1.createRun();
                     exec16.addBreak();
                     //Escrevendo a alternativa A
                     if(letra2.length != 0){
@@ -415,23 +473,20 @@ public class connectionWord_1 {
                         }
                     }
                 }
-                exec16.addBreak();
             }
-//            XWPFParagraph teste = doc.createParagraph();
-//            XWPFRun run = teste.createRun();
-//            File to = new File("‪C:\\Users\\jacks\\OneDrive\\Documentos\\BancodeQuestões\\Imagens\\10.jpg");
-//            imagem = new FileInputStream(to);
-//             try {
-//                run.addPicture(imagem, XWPFDocument.PICTURE_TYPE_JPEG, to.getName(), Units.toEMU(98.5f), Units.toEMU(70.5f));
-//            } catch (InvalidFormatException ex) {
-//                Logger.getLogger(connectionWord_1.class.getName()).log(Level.SEVERE, null, ex);
-//            }
 
             doc.write(docSaida);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(connectionWord_1.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(connectionWord_1.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidFormatException ex) {
+            Logger.getLogger(connectionWord_1.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public static void mostraProva(){
+        POIFSFileSystem fs = null;
+        
     }
 }
